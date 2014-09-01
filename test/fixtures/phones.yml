@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  device_id: MyString
+  model: MyString
+  build_json: MyString
+
+two:
+  device_id: MyString
+  model: MyString
+  build_json: MyString
