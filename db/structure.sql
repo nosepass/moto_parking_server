@@ -41,7 +41,8 @@ CREATE TABLE parking_spots (
     description text,
     type integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    spaces integer
 );
 
 
@@ -205,4 +206,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140831200946');
 INSERT INTO schema_migrations (version) VALUES ('20140831202630');
 
 INSERT INTO schema_migrations (version) VALUES ('20140901053159');
+
+INSERT INTO schema_migrations (version) VALUES ('20140903002059');
 
