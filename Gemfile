@@ -43,3 +43,10 @@ gem 'byebug', group: [:development, :test]
 #gem 'web-console', '>= 2.0.0.beta3'
 
 #gem 'vestal_versions', :git => 'git://github.com/laserlemon/vestal_versions.git'
+
+gem 'guard', '~> 2.6.1', group: [:development]
+gem 'guard-minitest', '~> 2.3.2', group: [:development]
+
+# this is for rake doc:guides
+gem 'redcarpet', '~> 2.1.1'
+gem 'nokogiri', '~> 1.6.3.1'
