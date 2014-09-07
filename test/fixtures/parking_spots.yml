@@ -1,15 +1,18 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: 3rd and Minna St
   latitude: 9.99
   longitude: 9.99
-  description: MyText
-  type: 1
+  description: South side of Minna St
+  paid: true
+  spaces: 7
 
 two:
-  name: MyString
+  name: 20th and Florida
   latitude: 9.99
   longitude: 9.99
-  description: MyText
-  type: 1
+  description: 2 spots on east side of Florida St
+  paid: false
+  spaces: 2
+

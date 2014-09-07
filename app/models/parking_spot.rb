@@ -1,3 +1,3 @@
 class ParkingSpot < ActiveRecord::Base
-  enum type: [ :free, :paid ]
+  validates :name, :latitude, :longitude, :type, :spaces, presence: true
 end
