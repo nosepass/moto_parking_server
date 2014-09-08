@@ -3,4 +3,58 @@
 # to create a nickname etc
 class User < ActiveRecord::Base
   validates :epassword, :salt, presence: true
+  validates :nickname, :uniqueness => true, :presence => true
+
+  EMAIL_REGEX = /\A[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\z/i
+  validates :email, :uniqueness => true, :allow_nil => true, :format => EMAIL_REGEX
+  
+  attr_accessor :password
+  validates :password, :confirmation => true
+  before_validation :encrypt_password
+  after_save :clear_password
+  
+  # Require logging the phone id on any user operations
+  attr_accessor :phone_info
+  validates :phone_info, :presence => true
+  before_save :update_phone_log
+
+
+  def generate_nickname!
+    suffix = User.count
+    self.nickname = "Anon#{suffix}"
+  end
+
+  # this creates a randomly generated password for new users
+  # that can be overwritten with a user-chosen one
+  # this random password is stored on the phone
+  def generate_password
+
+  end
+
+  def self.authenticate(nickname, password)
+    user = find_by_nickname(nickname)
+    if user && user.epassword == BCrypt::Engine.hash_secret(password, user.salt)
+      user
+    else
+      nil
+    end
+  end
+
+
+  protected
+
+  def encrypt_password
+    if password.present?
+      self.salt = BCrypt::Engine.generate_salt
+      self.epassword = BCrypt::Engine.hash_secret(password, salt)
+    end
+  end
+
+  def clear_password
+    self.password = nil
+  end
+
+  def update_phone_log
+    Phone.phone_accessed phone_info
+  end
 end

@@ -5,13 +5,13 @@ one:
   fname: MyString
   lname: MyString
   email: MyString
-  epassword: MyString
-  salt: MyString
+  epassword: $2a$10$Jql5/W6okXIhhGBRmOYHfOfffrGEPQ/zfiVZDh9G3yvF7GXd5MLHC
+  salt: $2a$10$Jql5/W6okXIhhGBRmOYHfO
 
 two:
-  nickname: MyString
+  nickname: MyString2
   fname: MyString
   lname: MyString
   email: MyString
-  epassword: MyString
-  salt: MyString
+  epassword: $2a$10$Jql5/W6okXIhhGBRmOYHfOfffrGEPQ/zfiVZDh9G3yvF7GXd5MLHC
+  salt: $2a$10$Jql5/W6okXIhhGBRmOYHfO

@@ -2,10 +2,10 @@
 
 one:
   device_id: MyString
-  model: MyString
-  build_json: MyString
+  model: MyModel
+  build_json: '{"build":"foo"}'
 
 two:
-  device_id: MyString
+  device_id: MyString2
   model: MyString
-  build_json: MyString
+  build_json: '{"build":"foo"}'
