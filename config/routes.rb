@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :parking
-  #resources :test
+  resources :parking_spots
+  #resources :tests
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
