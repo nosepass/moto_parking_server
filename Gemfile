@@ -46,6 +46,7 @@ gem 'byebug', group: [:development, :test]
 
 gem 'guard', '~> 2.6.1', group: [:development]
 gem 'guard-minitest', '~> 2.3.2', group: [:development]
+gem 'mocha', '~> 1.1.0', group: [:development, :test]
 
 # this is for rake doc:guides
 gem 'redcarpet', '~> 2.1.1'

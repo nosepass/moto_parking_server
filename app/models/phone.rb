@@ -4,6 +4,7 @@
 # TelephonyManager#getDeviceId(), which some hardware dependent longass string.
 # A hash of detailed build information is also kept alongside the model number.
 class Phone < ActiveRecord::Base
+  validates :device_id, :model, :build_json, presence: true
   validates :device_id, :uniqueness => true
 
   def self.phone_accessed(pinfo)

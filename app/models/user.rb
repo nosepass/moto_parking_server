@@ -1,3 +1,5 @@
+require 'securerandom'
+
 # A user. This is usually autocreated, with a generated password
 # being issued. All other information is optional, if user a cares
 # to create a nickname etc
@@ -24,13 +26,6 @@ class User < ActiveRecord::Base
     self.nickname = "Anon#{suffix}"
   end
 
-  # this creates a randomly generated password for new users
-  # that can be overwritten with a user-chosen one
-  # this random password is stored on the phone
-  def generate_password
-
-  end
-
   def self.authenticate(nickname, password)
     user = find_by_nickname(nickname)
     if user && user.epassword == BCrypt::Engine.hash_secret(password, user.salt)
@@ -38,6 +33,35 @@ class User < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def self.create_new_user(phone_info)
+    # require phone info to create user
+    phone_device_id = phone_info && phone_info[:device_id]
+    phone = Phone.find_by_device_id phone_device_id
+    if phone.nil?
+      phone = Phone.new phone_info
+      if not phone.save
+        return nil
+      end
+    end
+
+    user = User.new
+    user.generate_nickname!
+    password = user.generate_password
+    user.phone_info = phone
+    if user.save
+      {user:user, password: password}
+    else
+      nil
+    end
+  end
+
+  # this creates a randomly generated password for new users
+  # that can be overwritten with a user-chosen one
+  # this random password is stored on the phone
+  def generate_password
+    self.password = SecureRandom.hex
   end
 
 

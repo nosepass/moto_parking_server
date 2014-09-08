@@ -49,4 +49,31 @@ class UserTest < ActiveSupport::TestCase
     user = User.authenticate(nil, "foobar")
     assert_nil user
   end
+
+  test "should be able generate a random password" do
+    user = User.new
+    assert_nil user.password
+    user.generate_password
+    assert_not_nil user.password
+  end
+
+  test "should be able automatically generate a new user" do
+    phone_info = phones :one
+    assert_difference('User.count') do
+      User.create_new_user phone_info
+    end
+  end
+
+  test "should return the automatically generated user's nickname and password" do
+    phone_info = phones :one
+    userinfo = User.create_new_user phone_info
+    assert_not_nil userinfo
+    assert userinfo[:user].nickname.is_a? String
+    assert userinfo[:password].is_a? String
+  end
+
+  test "should fail to generate a new user without phone info" do
+    result = User.create_new_user nil
+    assert_nil result
+  end
 end

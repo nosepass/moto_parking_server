@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :parking_spots
+  resources :users
+  resources :login
   #resources :tests
 
   # The priority is based upon order of creation: first created -> highest priority.
