@@ -26,12 +26,11 @@ class User < ActiveRecord::Base
     self.nickname = "Anon#{suffix}"
   end
 
-  def self.authenticate(nickname, password)
-    user = find_by_nickname(nickname)
-    if user && user.epassword == BCrypt::Engine.hash_secret(password, user.salt)
-      user
+  def authenticate(password)
+    if self.epassword == BCrypt::Engine.hash_secret(password, self.salt)
+      true
     else
-      nil
+      false
     end
   end
 

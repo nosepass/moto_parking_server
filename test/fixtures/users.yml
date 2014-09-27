@@ -5,7 +5,7 @@ one:
   fname: MyString
   lname: MyString
   email: MyString
-  epassword: $2a$10$Jql5/W6okXIhhGBRmOYHfOfffrGEPQ/zfiVZDh9G3yvF7GXd5MLHC
+  epassword: $2a$10$Jql5/W6okXIhhGBRmOYHfOfffrGEPQ/zfiVZDh9G3yvF7GXd5MLHC # foo
   salt: $2a$10$Jql5/W6okXIhhGBRmOYHfO
 
 two:

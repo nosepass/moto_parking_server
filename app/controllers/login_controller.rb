@@ -2,15 +2,20 @@ class LoginController < ApplicationController
 
   # POST /login.json
   def create
-    params.require(:credentials).permit([:nickname, :password, :password_confirmation])
+    params.require(:credentials).permit([:nickname, :password])
     params.require(:phone_info).permit([:device_id, :model, :build_json])
     #@spot = ParkingSpot.new(parking_params)
 
     creds = params[:credentials]
     phone_info = params[:phone_info]
-    user = User.authenticate(creds[:nickname], creds[:password])
+    user = User.find_by_nickname creds[:nickname]
     if user
-      redirect_to(:controller => 'users', :action => 'show', :id => user.id)
+      if user.authenticate(creds[:password])
+        session[:user_id] = user.id
+        redirect_to(:controller => 'users', :action => 'show', :id => user.id)
+      else
+        render json: {message: "password incorrect"}, status: :forbidden
+      end
     else
       userinfo = User.create_new_user phone_info
       if userinfo

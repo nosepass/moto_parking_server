@@ -39,10 +39,10 @@ CREATE TABLE parking_spots (
     latitude numeric(9,6),
     longitude numeric(9,6),
     description text,
-    type integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    spaces integer
+    spaces integer,
+    paid boolean
 );
 
 
@@ -108,6 +108,37 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tests (
+    id integer NOT NULL,
+    test_title character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -161,6 +192,13 @@ ALTER TABLE ONLY phones ALTER COLUMN id SET DEFAULT nextval('phones_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -178,6 +216,14 @@ ALTER TABLE ONLY parking_spots
 
 ALTER TABLE ONLY phones
     ADD CONSTRAINT phones_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
 
 
 --
@@ -208,4 +254,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140831202630');
 INSERT INTO schema_migrations (version) VALUES ('20140901053159');
 
 INSERT INTO schema_migrations (version) VALUES ('20140903002059');
+
+INSERT INTO schema_migrations (version) VALUES ('20140905194721');
+
+INSERT INTO schema_migrations (version) VALUES ('20140907205555');
 

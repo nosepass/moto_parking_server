@@ -32,22 +32,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil @dummy_new_user.nickname
   end
 
-  test "should be able to authenticate a user by nickname and password" do
-    nick = users(:one).nickname
-    user = User.authenticate(nick, "foo")
-    assert_not_nil user
-    assert_equal user.nickname, nick
+  test "should be able to authenticate a user by password" do
+    user = users :one
+    nick = user.nickname
+    authed = user.authenticate("foo")
+    assert authed
   end
 
   test "should not be able to authenticate with the wrong password" do
-    nick = users(:one).nickname
-    user = User.authenticate(nick, "foobar")
-    assert_nil user
-  end
-
-  test "should not be able to authenticate with no nick" do
-    user = User.authenticate(nil, "foobar")
-    assert_nil user
+    user = users :one
+    nick = user.nickname
+    authed = user.authenticate("wrongpassword")
+    assert_not authed
   end
 
   test "should be able generate a random password" do
