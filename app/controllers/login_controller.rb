@@ -1,3 +1,4 @@
+# The authentication process goes thru here
 class LoginController < ApplicationController
 
   # POST /login.json

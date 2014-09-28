@@ -3,6 +3,20 @@ require 'test_helper'
 class ParkingSpotsControllerTest < ActionController::TestCase
   setup do
     @spot = parking_spots(:one)
+    session[:user_id] = users(:one).id # authenticate
+  end
+
+  test "should forbid you if you're not logged in" do
+    session[:user_id] = nil
+    get :index, :format => :json
+    assert_response :forbidden
+
+    assert_no_difference('ParkingSpot.count') do
+      post :create, parking_spot: { :name => "foo", :description => "bar", :latitude => 0, :longitude => 0, :paid => false , :spaces => 1},
+        :format => :json
+    end
+
+    assert_response :forbidden
   end
 
   test "should get index" do
