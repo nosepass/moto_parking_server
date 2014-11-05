@@ -7,7 +7,7 @@ preload_app true
  
 timeout 30
  
-listen APP_ROOT + "/unicorn.sock", :backlog => 64
+listen "/tmp/unicorn.parking.sock", :backlog => 64
  
 pid APP_ROOT + "/unicorn.pid"
  
