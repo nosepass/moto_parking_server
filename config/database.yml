@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: parking_prod
-  username: parking
+  username: moto
   password: <%= ENV['PARKING_DATABASE_PASSWORD'] %>
