@@ -3,13 +3,10 @@ class LoginController < ApplicationController
 
   # POST /login.json
   def create
-    params.require(:credentials).permit([:nickname, :password])
-    params.require(:phone_info).permit([:device_id, :model, :build_json])
-    #@spot = ParkingSpot.new(parking_params)
-
-    creds = params[:credentials]
-    phone_info = params[:phone_info]
+    creds = params.require(:credentials).permit([:nickname, :password])
+    phone_info = params.require(:phone_info).permit([:device_id, :model, :build_json])
     user = User.find_by_nickname creds[:nickname]
+    
     if user
       if user.authenticate(creds[:password])
         session[:user_id] = user.id
