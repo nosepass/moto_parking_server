@@ -1,12 +1,13 @@
 # The authentication process goes thru here
 class LoginController < ApplicationController
+  skip_before_filter :verify_authenticity_token
 
   # POST /login.json
   def create
     creds = params.require(:credentials).permit([:nickname, :password])
     phone_info = params.require(:phone_info).permit([:device_id, :model, :build_json])
     user = User.find_by_nickname creds[:nickname]
-    
+
     if user
       if user.authenticate(creds[:password])
         session[:user_id] = user.id
