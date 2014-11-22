@@ -42,7 +42,7 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     get :index, :format => :json
     spots = JSON.parse @response.body
     first_spot = spots[0].with_indifferent_access
-    %w{ id name description url }.each{|k| assert first_spot.has_key? k}
+    %w{ id name description url latitude longitude }.each{|k| assert first_spot.has_key?(k), "key #{k} not found in json!"}
   end
 
   # test "should get new" do
