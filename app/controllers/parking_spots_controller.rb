@@ -2,7 +2,7 @@ class ParkingSpotsController < ApplicationController
   before_action :require_auth
   before_action :set_parking_spot, only: [:show, :edit, :update, :destroy]
 
-  # GET /parking_spot2s.json
+  # GET /parking_spots.json
   def index
     @spots = ParkingSpot.all
   end
