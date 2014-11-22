@@ -1,5 +1,6 @@
 # The authentication process goes thru here
 class LoginController < ApplicationController
+  respond_to :json
   skip_before_filter :verify_authenticity_token
 
   # POST /login.json

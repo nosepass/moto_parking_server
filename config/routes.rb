@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :parking_spots
-  resources :users
-  resources :login
+  resources :parking_spots, :defaults => { :format => :json }
+  resources :users, :defaults => { :format => :json }
+  resources :login, :defaults => { :format => :json }
   #resources :tests
 
   # The priority is based upon order of creation: first created -> highest priority.
