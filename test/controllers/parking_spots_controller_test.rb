@@ -59,6 +59,15 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should reject parking_spots without the required fields" do
+    post :create, parking_spot: { :description => "bar" },
+      :format => :json
+    assert_response :unprocessable_entity
+    post :create, parking_spot: { :latitude => 0, :longitude => 0, :paid => false , :spaces => 1},
+        :format => :json
+    assert_response :unprocessable_entity
+  end
+
   test "should show parking_spot" do
     get :show, id: @spot, :format => :json
     assert_response :success
