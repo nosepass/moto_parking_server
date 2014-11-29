@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
-  #skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token # disable CSRF protection since I don't feel like making the android client support it
 
   def require_auth
     if session[:user_id]
