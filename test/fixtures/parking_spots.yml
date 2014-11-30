@@ -16,3 +16,10 @@ two:
   paid: false
   spaces: 2
 
+three:
+  name: 40th and Balboa
+  latitude: 9.99
+  longitude: 9.99
+  paid: false
+  spaces: 2
+  deleted: true

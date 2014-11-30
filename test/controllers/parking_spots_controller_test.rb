@@ -28,7 +28,7 @@ class ParkingSpotsControllerTest < ActionController::TestCase
   test "should cough up at least one fixture parking spot from index" do
     get :index, :format => :json
     spots = assigns :spots
-    assert spots.length > 0
+    assert spots.length > 0, "0 spots were returned!"
   end
 
   test "should cough up valid json" do
@@ -41,8 +41,19 @@ class ParkingSpotsControllerTest < ActionController::TestCase
   test "should have json elements with the expected values" do
     get :index, :format => :json
     spots = JSON.parse @response.body
+    assert spots.length > 0, "bad test data!"
     first_spot = spots[0].with_indifferent_access
     %w{ id name description url latitude longitude }.each{|k| assert first_spot.has_key?(k), "key #{k} not found in json!"}
+  end
+
+  test "should not show deleted spots" do
+    deleted_spot = parking_spots :three
+    assert deleted_spot.deleted, "the test data is bad"
+    get :index, :format => :json
+    spots = JSON.parse @response.body
+    spots.each do |spot|
+      assert_not_equal deleted_spot.id, spot.with_indifferent_access[:id] , "a deleted spot showed up when it shouldn't have!"
+    end
   end
 
   # test "should get new" do

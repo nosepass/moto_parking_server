@@ -4,7 +4,7 @@ class ParkingSpotsController < ApplicationController
 
   # GET /parking_spots.json
   def index
-    @spots = ParkingSpot.all
+    @spots = ParkingSpot.where :deleted => false
   end
 
   # GET /parking_spots/1.json
