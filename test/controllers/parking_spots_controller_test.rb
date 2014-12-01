@@ -97,11 +97,11 @@ class ParkingSpotsControllerTest < ActionController::TestCase
   end
 
   test "should destroy parking_spot" do
-    assert_difference('ParkingSpot.count', -1) do
-      delete :destroy, id: @spot, :format => :json
-    end
+    assert !@spot.deleted, "spot was in deleted state already! Cannot test!"
+    delete :destroy, id: @spot, :format => :json
+    @spot.reload
+    assert @spot.deleted, "spot was not deleted!"
 
     assert_response :success
-    #assert_redirected_to parking_spots_path
   end
 end

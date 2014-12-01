@@ -46,10 +46,12 @@ class ParkingSpotsController < ApplicationController
 
   # DELETE /parking_spots/1.json
   def destroy
-    @spot.destroy!
     respond_to do |format|
-      #format.json { head :no_content }
-      format.json { render json: {:message => 'Parking spot was successfully destroyed.'} }
+      if @spot.update :deleted => true
+        format.json { render json: {:message => 'Parking spot was successfully deleted.'} }
+      else
+        format.json { render json: @spot.errors, status: :unprocessable_entity }
+      end
     end
   end
 
