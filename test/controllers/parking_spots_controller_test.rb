@@ -3,6 +3,7 @@ require 'test_helper'
 class ParkingSpotsControllerTest < ActionController::TestCase
   setup do
     @spot = parking_spots(:one)
+    @expected_keys = %w{ id name description latitude longitude spaces paid }
     session[:user_id] = users(:one).id # authenticate
   end
 
@@ -43,7 +44,8 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     spots = JSON.parse @response.body
     assert spots.length > 0, "bad test data!"
     first_spot = spots[0].with_indifferent_access
-    %w{ id name description url latitude longitude }.each{|k| assert first_spot.has_key?(k), "key #{k} not found in json!"}
+    @expected_keys.each{|k| assert first_spot.has_key?(k), "key #{k} not found in json!"}
+    assert first_spot.has_key?("url"), "key url not found in json!"
   end
 
   test "should not show deleted spots" do
@@ -82,6 +84,12 @@ class ParkingSpotsControllerTest < ActionController::TestCase
   test "should show parking_spot" do
     get :show, id: @spot, :format => :json
     assert_response :success
+  end
+
+  test "should show json element with the expected values" do
+    get :show, id: @spot, :format => :json
+    spot = JSON.parse @response.body
+    @expected_keys.each{|k| assert spot.has_key?(k), "key #{k} not found in json!"}
   end
 
   # test "should get edit" do
