@@ -74,7 +74,7 @@ CREATE TABLE phones (
     id integer NOT NULL,
     device_id character varying(255),
     model character varying(255),
-    build_json character varying(255),
+    build_json text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -261,4 +261,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140905194721');
 INSERT INTO schema_migrations (version) VALUES ('20140907205555');
 
 INSERT INTO schema_migrations (version) VALUES ('20141130031403');
+
+INSERT INTO schema_migrations (version) VALUES ('20141207015757');
 
