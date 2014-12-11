@@ -112,4 +112,25 @@ class ParkingSpotsControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+
+  test "should log which user created a parking_spot" do
+    assert_equal users(:one).id, session[:user_id], "the wrong user is logged in!"
+    post :create, parking_spot: { :name => "foo", :description => "bar", :latitude => 0, :longitude => 0, :paid => false , :spaces => 1},
+      :format => :json
+    assert_response :success
+    new_spot_json = JSON.parse(@response.body).with_indifferent_access
+    new_spot = ParkingSpot.find new_spot_json[:id]
+    msg = "the created_by id is not the logged-in user's id!"
+    assert_not_nil new_spot.created_by, msg
+    assert_equal users(:one).id, new_spot.created_by.id, msg
+  end
+
+  test "should log which user updated a parking_spot" do
+    assert_equal users(:one).id, session[:user_id], "the wrong user is logged in!"
+    @spot.update! updated_by: users(:two)
+    patch :update, id: @spot, parking_spot: { :name => "foo2" },
+      :format => :json
+    @spot.reload
+    assert_equal users(:one).id, @spot.updated_by.id, "the id was not changed to the logged-in user's id!"
+  end
 end

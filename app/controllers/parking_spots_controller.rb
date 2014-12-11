@@ -23,6 +23,7 @@ class ParkingSpotsController < ApplicationController
   # POST /parking_spots.json
   def create
     @spot = ParkingSpot.new(parking_spot_params)
+    @spot.created_by = current_user
 
     respond_to do |format|
       if @spot.save
@@ -36,7 +37,7 @@ class ParkingSpotsController < ApplicationController
   # PATCH/PUT /parking_spots/1.json
   def update
     respond_to do |format|
-      if @spot.update(parking_spot_params)
+      if @spot.update parking_spot_params.merge(updated_by: current_user)
         format.json { render :show, status: :ok, location: @spot }
       else
         format.json { render json: @spot.errors, status: :unprocessable_entity }

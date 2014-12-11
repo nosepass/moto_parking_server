@@ -30,6 +30,20 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: foo; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE foo (
+    name name,
+    latitude double precision,
+    longitude double precision,
+    description name,
+    spaces integer,
+    paid boolean
+);
+
+
+--
 -- Name: parking_spots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -43,7 +57,9 @@ CREATE TABLE parking_spots (
     updated_at timestamp without time zone,
     spaces integer,
     paid boolean,
-    deleted boolean DEFAULT false
+    deleted boolean DEFAULT false,
+    created_by_id integer,
+    updated_by_id integer
 );
 
 
@@ -263,4 +279,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140907205555');
 INSERT INTO schema_migrations (version) VALUES ('20141130031403');
 
 INSERT INTO schema_migrations (version) VALUES ('20141207015757');
+
+INSERT INTO schema_migrations (version) VALUES ('20141211205206');
 

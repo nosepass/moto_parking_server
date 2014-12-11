@@ -4,6 +4,8 @@ require 'securerandom'
 # being issued. All other information is optional, if user a cares
 # to create a nickname etc
 class User < ActiveRecord::Base
+  has_many :created_spots, :class_name => "ParkingSpot", :foreign_key => "created_by"
+  has_many :updated_spots, :class_name => "ParkingSpot", :foreign_key => "modified_by"
   validates :epassword, :salt, presence: true
   validates :nickname, :uniqueness => true, :presence => true
 
