@@ -3,7 +3,7 @@ APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
 worker_processes 4
 working_directory APP_ROOT
  
-preload_app true
+preload_app false
  
 timeout 30
  
