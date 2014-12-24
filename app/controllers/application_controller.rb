@@ -18,4 +18,8 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_user
+
+  def phone_info_params
+    params.require(:phone_info).permit([:device_id, :model, :build_json])
+  end
 end

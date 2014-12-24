@@ -6,7 +6,7 @@ class LoginController < ApplicationController
   # POST /login.json
   def create
     creds = params.require(:credentials).permit([:nickname, :password])
-    phone_info = params.require(:phone_info).permit([:device_id, :model, :build_json])
+    phone_info = phone_info_params
     user = User.find_by_nickname creds[:nickname]
 
     if user
