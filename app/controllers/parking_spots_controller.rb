@@ -34,7 +34,7 @@ class ParkingSpotsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /parking_spots/1.json
+  # PATCH/PUT /parking_spots/33332e5a-dc83-48c9-ad92-28a99095b47b.json
   def update
     respond_to do |format|
       if @spot.update parking_spot_params.merge(updated_by: current_user)
@@ -45,7 +45,7 @@ class ParkingSpotsController < ApplicationController
     end
   end
 
-  # DELETE /parking_spots/1.json
+  # DELETE /parking_spots/33332e5a-dc83-48c9-ad92-28a99095b47b.json
   def destroy
     respond_to do |format|
       if @spot.update :deleted => true

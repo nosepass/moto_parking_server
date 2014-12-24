@@ -23,6 +23,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -30,25 +44,30 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: foo; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parking_spots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE foo (
-    name name,
-    latitude double precision,
-    longitude double precision,
-    description name,
+CREATE TABLE parking_spots (    
+    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    name character varying,
+    latitude numeric(9,6),
+    longitude numeric(9,6),
+    description text,
+    paid boolean DEFAULT true,
     spaces integer,
-    paid boolean
+    deleted boolean DEFAULT false,
+    created_at timestamp without time zone DEFAULT '2014-12-24 23:29:30.582199'::timestamp without time zone,
+    updated_at timestamp without time zone DEFAULT '2014-12-24 23:29:30.582199'::timestamp without time zone,
+    created_by_id integer,
+    updated_by_id integer
 );
 
 
 --
--- Name: parking_spots; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parking_spots_old; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE parking_spots (
-    id integer NOT NULL,
+CREATE TABLE parking_spots_old (
     name character varying(255),
     latitude numeric(9,6),
     longitude numeric(9,6),
@@ -59,27 +78,9 @@ CREATE TABLE parking_spots (
     paid boolean,
     deleted boolean DEFAULT false,
     created_by_id integer,
-    updated_by_id integer
+    updated_by_id integer,
+    id uuid DEFAULT uuid_generate_v4() NOT NULL
 );
-
-
---
--- Name: parking_spots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE parking_spots_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: parking_spots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE parking_spots_id_seq OWNED BY parking_spots.id;
 
 
 --
@@ -125,37 +126,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE tests (
-    id integer NOT NULL,
-    test_title character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tests_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -195,21 +165,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY parking_spots ALTER COLUMN id SET DEFAULT nextval('parking_spots_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY phones ALTER COLUMN id SET DEFAULT nextval('phones_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
 
 
 --
@@ -220,10 +176,18 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: parking_spots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parking_spots_new_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY parking_spots
+    ADD CONSTRAINT parking_spots_new_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_spots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY parking_spots_old
     ADD CONSTRAINT parking_spots_pkey PRIMARY KEY (id);
 
 
@@ -233,14 +197,6 @@ ALTER TABLE ONLY parking_spots
 
 ALTER TABLE ONLY phones
     ADD CONSTRAINT phones_pkey PRIMARY KEY (id);
-
-
---
--- Name: tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY tests
-    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
 
 
 --
@@ -281,4 +237,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141130031403');
 INSERT INTO schema_migrations (version) VALUES ('20141207015757');
 
 INSERT INTO schema_migrations (version) VALUES ('20141211205206');
+
+INSERT INTO schema_migrations (version) VALUES ('20141224230352');
 
