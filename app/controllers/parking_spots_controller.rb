@@ -24,6 +24,7 @@ class ParkingSpotsController < ApplicationController
   def create
     @spot = ParkingSpot.new(parking_spot_params)
     @spot.created_by = current_user
+    @spot.updated_by = current_user
 
     respond_to do |format|
       if @spot.save

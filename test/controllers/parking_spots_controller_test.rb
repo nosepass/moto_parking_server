@@ -104,6 +104,14 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     #assert_redirected_to parking_spots_path(assigns(:parking_spot))
   end
 
+  test "should reject updates to spots that don't exist yet" do
+    assert_raises(ActiveRecord::RecordNotFound) do
+      patch :update, id: '33332e5a-dc83-48c9-ad92-28a99095b47c',
+        parking_spot: { :name => "foo3", :latitude => 0, :longitude => 0, :spaces => 1},
+        :format => :json
+    end
+  end
+
   test "should destroy parking_spot" do
     assert !@spot.deleted, "spot was in deleted state already! Cannot test!"
     delete :destroy, id: @spot, :format => :json
@@ -121,8 +129,11 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     new_spot_json = JSON.parse(@response.body).with_indifferent_access
     new_spot = ParkingSpot.find new_spot_json[:id]
     msg = "the created_by id is not the logged-in user's id!"
+    msg2 = "the updated_by id is not the logged-in user's id!"
     assert_not_nil new_spot.created_by, msg
+    assert_not_nil new_spot.updated_by, msg2
     assert_equal users(:one).id, new_spot.created_by.id, msg
+    assert_equal users(:one).id, new_spot.updated_by.id, msg2
   end
 
   test "should log which user updated a parking_spot" do
