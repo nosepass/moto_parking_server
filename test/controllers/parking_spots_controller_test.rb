@@ -3,7 +3,7 @@ require 'test_helper'
 class ParkingSpotsControllerTest < ActionController::TestCase
   setup do
     @spot = parking_spots(:one)
-    @expected_keys = %w{ id name description latitude longitude spaces paid }
+    @expected_keys = %w{ id name description latitude longitude spaces paid spots_available_date }
     session[:user_id] = users(:one).id # authenticate
   end
 
