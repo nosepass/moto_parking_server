@@ -20,5 +20,8 @@ module Parking
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.active_record.schema_format = :sql
+
+    # Do not output milliseconds on the timestamps in json data, since Android does not expect them by default.
+    ActiveSupport::JSON::Encoding.time_precision = 0
   end
 end
