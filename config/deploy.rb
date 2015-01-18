@@ -2,14 +2,14 @@
 lock '3.3.5'
 
 set :application, 'parking'
-set :repo_url, 'moto@kahuna:parking_repo'
+set :repo_url, 'git://github.com/nosepass/moto_parking_server.git'
 set :user, "moto"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/home/moto/parking_server'
+set :deploy_to, '/home/moto/sfmotoparking.com'
 
 # Default value for :scm is :git
 # set :scm, :git

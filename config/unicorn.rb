@@ -6,8 +6,10 @@ working_directory APP_ROOT
 preload_app false
  
 timeout 30
- 
-listen "/tmp/unicorn.parking.sock", :backlog => 64
+
+PIDDIR = APP_ROOT + "/../../shared/pids/"
+Dir.mkdir(PIDDIR) unless File.directory?(PIDDIR) 
+listen PIDDIR + "/sfmotoparking.com.sock", :backlog => 64
  
 pid "/tmp/unicorn.parking.pid"
  
