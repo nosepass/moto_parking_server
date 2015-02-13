@@ -10,7 +10,6 @@ class ParkingSpotTest < ActiveSupport::TestCase
   test "should set created_at and updated_at on insert" do
     now = Time.now
     @new_spot.save
-    puts "created_at #{@new_spot.created_at} now #{now}"
     assert @new_spot.created_at >= now
     assert @new_spot.updated_at >= now
   end
