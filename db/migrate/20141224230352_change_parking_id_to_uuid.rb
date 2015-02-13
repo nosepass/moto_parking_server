@@ -10,7 +10,7 @@ class ChangeParkingIdToUuid < ActiveRecord::Migration
       t.boolean :paid, :default => true
       t.integer :spaces
       t.boolean :deleted, :default => false
-      t.timestamps default: 'NOW()', null: true
+      t.timestamps default: 'NOW()', null: true # I am not sure why I used the default option >_>. I have undone it in a later migration.
       t.integer :created_by_id
       t.integer :updated_by_id
     end

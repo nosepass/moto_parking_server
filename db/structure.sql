@@ -56,8 +56,8 @@ CREATE TABLE parking_spots (
     paid boolean DEFAULT true,
     spaces integer,
     deleted boolean DEFAULT false,
-    created_at timestamp without time zone DEFAULT '2014-12-24 23:29:18.308264'::timestamp without time zone,
-    updated_at timestamp without time zone DEFAULT '2014-12-24 23:29:18.308264'::timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     created_by_id integer,
     updated_by_id integer,
     spots_available_date timestamp without time zone
@@ -69,7 +69,6 @@ CREATE TABLE parking_spots (
 --
 
 CREATE TABLE parking_spots_old (
-    id integer NOT NULL,
     name character varying(255),
     latitude numeric(9,6),
     longitude numeric(9,6),
@@ -80,27 +79,9 @@ CREATE TABLE parking_spots_old (
     paid boolean,
     deleted boolean DEFAULT false,
     created_by_id integer,
-    updated_by_id integer
+    updated_by_id integer,
+    id uuid DEFAULT uuid_generate_v4() NOT NULL
 );
-
-
---
--- Name: parking_spots_old_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE parking_spots_old_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: parking_spots_old_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE parking_spots_old_id_seq OWNED BY parking_spots_old.id;
 
 
 --
@@ -146,37 +127,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE tests (
-    id integer NOT NULL,
-    test_title character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tests_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -216,21 +166,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY parking_spots_old ALTER COLUMN id SET DEFAULT nextval('parking_spots_old_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY phones ALTER COLUMN id SET DEFAULT nextval('phones_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
 
 
 --
@@ -249,11 +185,11 @@ ALTER TABLE ONLY parking_spots
 
 
 --
--- Name: parking_spots_old_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parking_spots_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY parking_spots_old
-    ADD CONSTRAINT parking_spots_old_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT parking_spots_pkey PRIMARY KEY (id);
 
 
 --
@@ -262,14 +198,6 @@ ALTER TABLE ONLY parking_spots_old
 
 ALTER TABLE ONLY phones
     ADD CONSTRAINT phones_pkey PRIMARY KEY (id);
-
-
---
--- Name: tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY tests
-    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
 
 
 --
@@ -311,7 +239,11 @@ INSERT INTO schema_migrations (version) VALUES ('20141207015757');
 
 INSERT INTO schema_migrations (version) VALUES ('20141211205206');
 
+INSERT INTO schema_migrations (version) VALUES ('20141224224423');
+
 INSERT INTO schema_migrations (version) VALUES ('20141224230352');
 
 INSERT INTO schema_migrations (version) VALUES ('20141226233701');
+
+INSERT INTO schema_migrations (version) VALUES ('20150213203700');
 
