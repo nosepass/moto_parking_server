@@ -6,6 +6,8 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
+      phone_info = phone_info_params
+      @subject.phone_info = phone_info
       if @subject.update(user_params)
         format.json { render :show, status: :ok, location: @subject }
       else
