@@ -3,7 +3,7 @@ require 'test_helper'
 class LoginControllerTest < ActionController::TestCase
   setup do
     @request.env['CONTENT_TYPE'] = 'application/json'
-    @phone_info = phones(:one)
+    @phone_info = phones(:one).as_json.with_indifferent_access.except(:id, :created_at, :updated_at)
   end
 
   def generate_body_json(nickAndPw)

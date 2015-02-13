@@ -65,7 +65,11 @@ class ParkingSpotsControllerTest < ActionController::TestCase
 
   test "should create parking_spot" do
     assert_difference('ParkingSpot.count') do
-      post :create, parking_spot: { :name => "foo", :description => "bar", :latitude => 0, :longitude => 0, :paid => false , :spaces => 1},
+      post :create, parking_spot: {
+          :id => "d3d4f3e8-b3b8-11e4-943c-0021ccb87d16",
+          :name => "foo", :description => "bar",
+          :latitude => 0, :longitude => 0, :paid => false , :spaces => 1
+          },
         :format => :json
     end
 
