@@ -116,6 +116,12 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     end
   end
 
+  test "should reject parking_spots that are erroneously in Danville" do
+    # See corresponding "Danville Test" in parking_spot_test.rb
+    patch :update, id: @spot, parking_spot: { longitude: -122.0 }, :format => :json
+    assert_response :unprocessable_entity
+  end
+
   test "should destroy parking_spot" do
     assert !@spot.deleted, "spot was in deleted state already! Cannot test!"
     delete :destroy, id: @spot, :format => :json

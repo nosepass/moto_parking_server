@@ -22,4 +22,15 @@ class ParkingSpotTest < ActiveSupport::TestCase
     assert old_updated_at < spot.updated_at
   end
 
+  test "should not save parking_spots that are erroneously in Danville" do
+    # There is a bug in the app (pre v6) that somehow sets the longitude to -122.0 on a move attempt
+    # This happens to be in the Danville area, and spots start migrating over there as people attempt to move them
+    # Block these update attempts to keep the data clean
+    assert_raises ActiveRecord::RecordInvalid do
+      spot = parking_spots(:one)
+      spot.longitude = -122.0
+      spot.save!
+    end
+  end
+
 end
