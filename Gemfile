@@ -54,3 +54,5 @@ gem 'mocha', '~> 1.1.0', group: [:development, :test]
 # this is for rake doc:guides
 gem 'redcarpet', '~> 2.1.1'
 gem 'nokogiri', '~> 1.6.3.1'
+
+gem 'bugsnag'
