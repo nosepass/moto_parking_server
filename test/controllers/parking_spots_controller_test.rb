@@ -154,4 +154,28 @@ class ParkingSpotsControllerTest < ActionController::TestCase
     @spot.reload
     assert_equal users(:one).id, @spot.updated_by.id, "the id was not changed to the logged-in user's id!"
   end
+
+  test "should work around the floating point truncation problems in ruby 2.1" do
+    problem_decimal = -122.41152372211218 # mri 2.1 and 2.2 truncate this to -122.0, 2.0 does not
+    expected = -122.411524
+    assert_not_equal @spot.longitude, expected
+    patch :update, id: @spot, parking_spot: { :name => "foo2", :latitude => 0, :longitude => problem_decimal},
+      :format => :json
+    #assert_response :success
+    @spot.reload
+    assert_equal @spot.longitude, expected, "the longitude was not updated properly! it was set to #{@spot.longitude}!"
+
+    # Test that it does not mess with the lat/lng if it was not sent
+    patch :update, id: @spot, parking_spot: { :name => "foo2" },
+      :format => :json
+    assert_response :success
+
+    # Try latitude too
+    patch :update, id: @spot, parking_spot: { :name => "foo2", :latitude => problem_decimal },
+      :format => :json
+    assert_response :success
+
+    @spot.reload
+    assert_equal @spot.latitude, expected, "the latitude was not updated properly! it was set to #{@spot.latitude}!"
+  end
 end

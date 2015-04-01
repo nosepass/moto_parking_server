@@ -1,7 +1,7 @@
 class ParkingSpotsController < ApplicationController
   before_action :require_auth
   before_action :set_parking_spot, only: [:show, :edit, :update, :destroy]
-  before_filter :reject_fp_gps, :only => [:create, :update]
+  before_filter :massage_gps_coords, :only => [:create, :update]
 
   # GET /parking_spots.json
   def index
@@ -69,11 +69,15 @@ class ParkingSpotsController < ApplicationController
       params.require(:parking_spot).permit([:id, :name, :latitude, :longitude, :description, :paid, :spaces])
     end
 
-    # For some reason Ruby 2.1+ likes to truncate certain floating point values before they can be converted to BigDecimal
-    # Only accept decimal data in the json encoded as strings to avoid this.
-    def reject_fp_gps
-      if !(params[:latitude].is_a?(String) && params[:longitude].is_a?(String))
-        raise ActionController::BadRequest, "gps coordinates must be quoted as strings"
+    # For some reason BigDecimal in Ruby 2.1/2.2 likes to truncate certain floating point values before they can be converted to BigDecimal
+    # See here http://stackoverflow.com/questions/28295583/why-are-my-bigdecimal-objects-initialized-with-unexpected-rounding-errors
+    # Convert the gps parameters to strings so the bug is not triggered.
+    def massage_gps_coords
+      spot = params[:parking_spot]
+      %i{latitude longitude}.each do |k|
+        if spot.has_key?(k) && !spot[k].is_a?(String)
+          spot[k] = spot[k].to_s
+        end
       end
     end
 end
