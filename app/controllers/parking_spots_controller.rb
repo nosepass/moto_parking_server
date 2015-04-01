@@ -1,6 +1,7 @@
 class ParkingSpotsController < ApplicationController
   before_action :require_auth
   before_action :set_parking_spot, only: [:show, :edit, :update, :destroy]
+  before_filter :reject_fp_gps, :only => [:create, :update]
 
   # GET /parking_spots.json
   def index
@@ -66,5 +67,13 @@ class ParkingSpotsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def parking_spot_params
       params.require(:parking_spot).permit([:id, :name, :latitude, :longitude, :description, :paid, :spaces])
+    end
+
+    # For some reason Ruby 2.1+ likes to truncate certain floating point values before they can be converted to BigDecimal
+    # Only accept decimal data in the json encoded as strings to avoid this.
+    def reject_fp_gps
+      if !(params[:latitude].is_a?(String) && params[:longitude].is_a?(String))
+        raise ActionController::BadRequest, "gps coordinates must be quoted as strings"
+      end
     end
 end
